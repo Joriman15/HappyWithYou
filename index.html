@@ -16,7 +16,7 @@
         overflow: hidden;
       }
 
-      /* Heart shape */
+      /* Heart */
       .heart {
         position: relative;
         width: 150px;
@@ -26,8 +26,8 @@
         cursor: pointer;
         transition: transform 2s ease, opacity 2s ease;
         z-index: 2;
+        animation: pulse 1.5s infinite;
       }
-
       .heart::before,
       .heart::after {
         content: "";
@@ -37,39 +37,67 @@
         background-color: red;
         border-radius: 50%;
       }
-
       .heart::before {
         top: -75px;
         left: 0;
       }
-
       .heart::after {
         left: 75px;
         top: 0;
       }
-
-      /* Expanded + faded state */
       .heart.clicked {
         transform: scale(15) rotate(-45deg);
         opacity: 0;
+        animation: none;
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: rotate(-45deg) scale(1);
+        }
+        50% {
+          transform: rotate(-45deg) scale(1.1);
+        }
       }
 
-      /* Image container */
-      .photos {
+      /* Slideshow container */
+      .slideshow-wrapper {
         position: absolute;
         width: 100%;
-        height: 100%;
-        background-size: cover;
-        background-position: center;
+        height: 60vh;
+        top: 50%;
+        transform: translateY(-50%);
+        overflow: hidden;
         opacity: 0;
-        transition: opacity 2s ease;
+        transition: opacity 1.5s ease;
         z-index: 1;
       }
-
-      .photos.show {
-        opacity: 1;
+      .slideshow {
+        display: flex;
+        height: 100%;
+        animation: slide 35s linear infinite;
+        animation-play-state: paused;
+      }
+      .slideshow img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center center;
+        margin-right: 10px;
+        border-radius: 10px;
       }
 
+      /* Loop animation */
+      @keyframes slide {
+        from {
+          transform: translateX(0);
+        }
+        to {
+          transform: translateX(-100%);
+        }
+      }
+
+      /* Responsive heart */
       @media (max-width: 768px) {
         .heart {
           width: 100px;
@@ -90,21 +118,56 @@
     </style>
   </head>
   <body>
+    <!-- Heart -->
     <div class="heart" id="heart"></div>
-    <div
-      class="photos"
-      id="photos"
-      style="background-image: url('your-photo.jpg')"
-    ></div>
+
+    <!-- Slideshow -->
+    <div class="slideshow-wrapper" id="slideshowWrapper">
+      <div class="slideshow" id="slideshow">
+        <!-- Original 14 images -->
+        <img src="imgs/photo1.jpg" />
+        <img src="imgs/photo2.png" />
+        <img src="imgs/photo3.jfif" />
+        <img src="imgs/photo4.jfif" />
+        <img src="imgs/photo5.jpg" />
+        <img src="imgs/photo6.jpg" />
+        <img src="imgs/photo7.jfif" />
+        <img src="imgs/photo8.jfif" />
+        <img src="imgs/photo9.jfif" />
+        <img src="imgs/photo10.jfif" />
+        <img src="imgs/photo11.jpg" />
+        <img src="imgs/photo12.jfif" />
+        <img src="imgs/photo13.jpg" />
+        <img src="imgs/photo14.jfif" />
+
+        <!-- Duplicate for seamless loop -->
+        <img src="imgs/photo1.jpg" />
+        <img src="imgs/photo2.png" />
+        <img src="imgs/photo3.jfif" />
+        <img src="imgs/photo4.jfif" />
+        <img src="imgs/photo5.jpg" />
+        <img src="imgs/photo6.jpg" />
+        <img src="imgs/photo7.jfif" />
+        <img src="imgs/photo8.jfif" />
+        <img src="imgs/photo9.jfif" />
+        <img src="imgs/photo10.jfif" />
+        <img src="imgs/photo11.jpg" />
+        <img src="imgs/photo12.jfif" />
+        <img src="imgs/photo13.jpg" />
+        <img src="imgs/photo14.jfif" />
+      </div>
+    </div>
 
     <script>
       const heart = document.getElementById("heart");
-      const photos = document.getElementById("photos");
+      const slideshowWrapper = document.getElementById("slideshowWrapper");
+      const slideshow = document.getElementById("slideshow");
 
       heart.addEventListener("click", () => {
         heart.classList.add("clicked");
         setTimeout(() => {
-          photos.classList.add("show");
+          slideshowWrapper.style.opacity = "1";
+          slideshow.style.animationPlayState = "running";
         }, 1500);
       });
     </script>
